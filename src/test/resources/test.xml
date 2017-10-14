@@ -1,0 +1,10 @@
+<person>
+<age>12</age>
+<name>Teppo testi</name>
+<id>asdfh2354</id>
+<hobbies>
+	<hobby>football</hobby>
+	<hobby>cooking</hobby>
+	<hobby>music</hobby>
+</hobbies>
+</person>
