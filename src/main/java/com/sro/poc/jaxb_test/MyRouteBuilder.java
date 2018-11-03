@@ -13,29 +13,23 @@ import com.sro.poc.jaxb_test.xml.Person;
  */
 public class MyRouteBuilder extends RouteBuilder {
 
-	
-	public void configure() {
+	public void configure() throws JAXBException {
 		// Initialize JAXB
-		JAXBContext jaxbContext;
-		JaxbDataFormat jaxbDataFormat;
-		try {
-			jaxbContext = JAXBContext.newInstance(Person.class);
-			jaxbDataFormat = new JaxbDataFormat(jaxbContext);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			return;
-		}
-		
+		JAXBContext jaxbContext = JAXBContext.newInstance(Person.class);
+		JaxbDataFormat jaxbDataFormat = new JaxbDataFormat(jaxbContext);
+
 		// Create camel route
-        from("file:xml-in")
-        .unmarshal(jaxbDataFormat) // convert XML string to POJO.        
-        .log("processing person: ${body.getName}")
-        .log("....age ${body.getAge}")
-        .log("....ID: ${body.getId}")
+		//@formatter:off
+        from("file:xml-in").routeId("processXmlFile")
+        	.unmarshal(jaxbDataFormat) // convert XML string to POJO.        
+        	.log("processing person: ${body.getName}")
+        	.log("....age ${body.getAge}")
+        	.log("....ID: ${body.getId}")
         
-        .split().simple("${body.hobbies}")
-        	// Process each hobby separately.
-        	.log("....hobby: ${body.getName}")
-        .end();
+        	.split().simple("${body.hobbies}")
+        		// Process each hobby separately.
+        		.log("....hobby: ${body.getName}")
+        	.end()
+        ;
     }
 }
